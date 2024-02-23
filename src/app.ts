@@ -22,10 +22,12 @@ app.use(morgan("dev"));
 // importing routes
 import userRoute from "./routes/user.route";
 import productRoute from "./routes/product.route";
+import cartRoute from "./routes/cart.route";
 
 // using routes
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/products", productRoute);
+app.use("/api/v1/carts", cartRoute);
 
 app.use(errorMiddleware);
 

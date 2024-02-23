@@ -287,7 +287,6 @@ export const addProductReview = asyncHandler(async (req, res, next) => {
 	}
 
 	const numberRating = Number(rating);
-	console.log(numberRating);
 
 	const newReview: IReview = {
 		user: user._id,
