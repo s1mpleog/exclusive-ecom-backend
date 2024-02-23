@@ -58,3 +58,12 @@ export interface BaseQuery {
 	};
 	category?: string;
 }
+
+export type IOrderProcessType = {
+	streetAddress: string;
+	phoneNumber: string;
+	emailAddress: string;
+	city: string;
+	country: string;
+	apartment: string;
+};
