@@ -42,7 +42,9 @@ export const addToCart = asyncHandler(async (req, res, next) => {
 		const newCart = await cartModel.create({
 			products: productId,
 			user: userId,
-			totalAmount: product.price,
+			totalAmount: product.offerPrice
+				? product.offerPrice
+				: product.price,
 		});
 
 		// const updatedCart = await cartModel
@@ -64,10 +66,13 @@ export const addToCart = asyncHandler(async (req, res, next) => {
 export const getCartItems = asyncHandler(async (req, res, next) => {
 	const userId = req.user;
 
-	const items = await cartModel.find({ user: userId }).populate({
-		path: "products",
-		select: "name price quantity",
-	});
+	const items = await cartModel
+		.find({ user: userId })
+		.populate({
+			path: "products",
+			select: "name price quantity images offerPrice",
+		})
+		.sort({ createdAt: -1 });
 
 	return res.status(200).json({
 		success: true,

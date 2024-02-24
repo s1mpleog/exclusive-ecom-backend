@@ -23,7 +23,7 @@ router.route("/search").get(searchProduct);
 router
 	.route("/all")
 
-	.get(verifyJWT, isAdmin, getAllProducts);
+	.get(verifyJWT, getAllProducts);
 
 router.route("/review/:productId").put(verifyJWT, addProductReview);
 

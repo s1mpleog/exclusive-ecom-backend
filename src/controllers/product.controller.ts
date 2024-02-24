@@ -83,7 +83,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
 });
 
 export const getAllProducts = asyncHandler(async (req, res, next) => {
-	const products = await productModel.find({});
+	const products = await productModel.find({}).sort({ createdAt: -1 });
 
 	return res.status(200).send({
 		success: true,
@@ -298,12 +298,22 @@ export const addProductReview = asyncHandler(async (req, res, next) => {
 	const totalReviews = product.reviews.length;
 
 	if (totalReviews === 0) {
+		// Handle the case where there are no ratings
+		product.averageRating = 0;
 	} else {
 		const sumRatings = product.reviews.reduce(
 			(sum, review) => sum + review.rating,
 			0
 		);
-		product.averageRating = sumRatings / totalReviews;
+
+		// Check if there's only one rating
+		if (totalReviews === 1) {
+			// If there's only one rating, use that as the average
+			product.averageRating = product.reviews[0].rating;
+		} else {
+			// Otherwise, calculate the average as before
+			product.averageRating = sumRatings / totalReviews;
+		}
 	}
 
 	product.reviews.push(newReview);
