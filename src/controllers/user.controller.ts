@@ -134,3 +134,15 @@ export const getLoggedInUser = asyncHandler(async (req, res, next) => {
 
 	await getUserById(id, res);
 });
+
+export const updateToken = asyncHandler(async (req, res, next) => {
+	const userId = req.user;
+
+	const user = await userModel.findById(userId).select("-refreshToken");
+
+	if (!user) {
+		return next(new ErrorHandler("User not found", 404));
+	}
+
+	sendToken(user, res, 200);
+});
