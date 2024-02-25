@@ -81,7 +81,7 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 
 	await order.save();
 
-	await cartModel.deleteMany({ user: userId });
+	// await cartModel.deleteMany({ user: userId });
 
 	res.status(201).json({
 		success: true,
@@ -116,26 +116,28 @@ export const checkout = asyncHandler(async (req, res, next) => {
 
 	const userId = req.user;
 
-	const orders = await orderModel
+	const cart = await cartModel
 		.find({
 			user: userId,
 		})
+		.populate("products")
 		.populate("products.product");
 
-	if (!orders || orders.length === 0) {
+	if (!cart || cart.length === 0) {
 		return next(new ErrorHandler("No orders found for the user", 404));
 	}
 
 	const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] =
-		orders.flatMap((order) =>
+		cart.flatMap((order) =>
 			order.products.map((product) => ({
 				price_data: {
 					currency: "inr",
 					product_data: {
-						name: product.product.name,
-						images: [product.product.image[0].url],
+						name: product.name,
 					},
-					unit_amount: product.product.price * 100, // Convert to paise
+					unit_amount: product.offerPrice
+						? product.offerPrice
+						: product.price,
 				},
 				quantity: product.quantity,
 			}))
