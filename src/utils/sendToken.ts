@@ -13,6 +13,7 @@ export const refreshTokenExpires = parseInt(
 export const accessTokenOptions: ICookieOptions = {
 	expires: new Date(Date.now() + accessTokenExpires * 60 * 60 * 1000),
 	httpOnly: true,
+	secure: process.env.NODE_ENV !== "development",
 	sameSite: "none",
 	maxAge: accessTokenExpires * 60 * 60 * 1000,
 };
@@ -20,6 +21,7 @@ export const accessTokenOptions: ICookieOptions = {
 export const refreshTokenOptions: ICookieOptions = {
 	expires: new Date(Date.now() + refreshTokenExpires * 24 * 60 * 60 * 1000),
 	httpOnly: true,
+	secure: process.env.NODE_ENV !== "development",
 	sameSite: "none",
 	maxAge: refreshTokenExpires * 24 * 60 * 60 * 1000,
 };
