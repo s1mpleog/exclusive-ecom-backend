@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model, mongo } from "mongoose";
+import validator from "validator";
 
 export interface IOrder extends Document {
 	shippingInfo: {
@@ -37,13 +38,7 @@ const orderSchema = new Schema<IOrder>({
 		phoneNumber: {
 			type: String,
 			required: true,
-			validate: {
-				validator: function (value: string) {
-					return /^\d{10}$/.test(value);
-				},
-				message:
-					"Invalid phone number format. Please enter a 10-digit numeric phone number.",
-			},
+			validate: validator.isMobilePhone,
 		},
 		country: {
 			type: String,

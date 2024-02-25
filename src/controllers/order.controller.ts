@@ -90,6 +90,25 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 	});
 });
 
+export const getOrder = asyncHandler(async (req, res, next) => {
+	const userId = req.user;
+
+	const order = await orderModel
+		.find({
+			user: userId,
+		})
+		.populate("user");
+
+	if (!order) {
+		return next(new ErrorHandler("Order not found", 404));
+	}
+
+	res.status(200).json({
+		success: true,
+		order,
+	});
+});
+
 export const checkout = asyncHandler(async (req, res, next) => {
 	const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 		apiVersion: "2023-10-16",

@@ -27,7 +27,8 @@
     "next": "^14.1.0",
     "nodemailer": "^6.9.9",
     "stripe": "^14.18.0",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -41,6 +42,7 @@
     "@types/node": "^20.11.20",
     "@types/nodemailer": "^6.4.14",
     "@types/react": "^18.2.58",
+    "@types/validator": "^13.11.9",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

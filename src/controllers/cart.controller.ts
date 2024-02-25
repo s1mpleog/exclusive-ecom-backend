@@ -30,8 +30,9 @@ export const addToCart = asyncHandler(async (req, res, next) => {
 
 	if (existingCartItem) {
 		(existingCartItem.quantity += 1),
-			(existingCartItem.totalAmount +=
-				product.price * existingCartItem.quantity);
+			(existingCartItem.totalAmount += product.offerPrice
+				? product.offerPrice
+				: product.price * existingCartItem.quantity);
 		await existingCartItem.save();
 		res.status(200).json({
 			success: true,
@@ -46,14 +47,6 @@ export const addToCart = asyncHandler(async (req, res, next) => {
 				? product.offerPrice
 				: product.price,
 		});
-
-		// const updatedCart = await cartModel
-		// 	.findOne({ user: userId })
-		// 	.populate("product");
-
-		// const totalAmount = updatedCart!.products.reduce((total, product) => {
-		// 	return total + product.price * product.quantity;
-		// }, 0);
 
 		res.status(201).json({
 			success: true,
