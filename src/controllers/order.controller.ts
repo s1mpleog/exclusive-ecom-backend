@@ -122,8 +122,8 @@ export const checkout = asyncHandler(async (req, res, next) => {
 		})
 		.populate("products.product");
 
-	if (!orders) {
-		return next(new ErrorHandler("Order not found", 404));
+	if (!orders || orders.length === 0) {
+		return next(new ErrorHandler("No orders found for the user", 404));
 	}
 
 	const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] =
@@ -133,9 +133,9 @@ export const checkout = asyncHandler(async (req, res, next) => {
 					currency: "inr",
 					product_data: {
 						name: product.product.name,
-						images: [product.product.image], // Add images to product_data if available
+						images: [product.product.image[0].url],
 					},
-					unit_amount: product.product.price * 100,
+					unit_amount: product.product.price * 100, // Convert to paise
 				},
 				quantity: product.quantity,
 			}))
@@ -145,9 +145,9 @@ export const checkout = asyncHandler(async (req, res, next) => {
 		payment_method_types: ["card"],
 		line_items: line_items,
 		mode: "payment",
-		success_url: `${process.env.FRONTEND_URL}/success`,
-		cancel_url: `${process.env.FRONTEND_URL}/success`,
+		success_url: `http://localhost:5173/success`,
+		cancel_url: `http://localhost:5173/cancel`,
 	});
 
-	res.json({ session: session.id });
+	res.json({ url: session.url });
 });

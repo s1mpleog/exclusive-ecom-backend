@@ -11,6 +11,8 @@ const app = express();
 app.use(express.json({ limit: "20mb" }));
 app.use(bodyParser.raw({ type: "application/json" }));
 
+const frontendUrls = process.env.FRONTEND_URL!.split(",");
+
 // Use handleWebhookEvent as the route handler
 app.post("/webhook", handleWebhookEvent);
 
@@ -18,7 +20,7 @@ app.use(cookieParser());
 
 app.use(
 	cors({
-		origin: process.env.FRONTEND_URL,
+		origin: frontendUrls,
 		credentials: true,
 	})
 );

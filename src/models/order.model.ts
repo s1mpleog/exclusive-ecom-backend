@@ -38,7 +38,7 @@ const orderSchema = new Schema<IOrder>({
 		phoneNumber: {
 			type: String,
 			required: true,
-			validate: validator.isMobilePhone,
+			// validate: validator.isMobilePhone,
 		},
 		country: {
 			type: String,
