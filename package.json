@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-		"start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node dist/server.js"
+		"start": "NODE_OPTIONS='--experimental-specifier-resolution=node' node dist/server.js",
+		"build": "tsc --build"
 	},
 	"keywords": [],
 	"author": "",
